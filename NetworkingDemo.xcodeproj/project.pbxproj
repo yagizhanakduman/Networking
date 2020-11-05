@@ -1,0 +1,769 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5121D54325515BCE006F13E9 /* UITableView+NetworkingDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5121D54225515BCE006F13E9 /* UITableView+NetworkingDemo.swift */; };
+		5121D54625515C87006F13E9 /* StarshipsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5121D54425515C87006F13E9 /* StarshipsTableViewCell.swift */; };
+		5121D54725515C87006F13E9 /* StarshipsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5121D54525515C87006F13E9 /* StarshipsTableViewCell.xib */; };
+		5124344E2542D02C007B277C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5124344D2542D02C007B277C /* AppDelegate.swift */; };
+		512434552542D02C007B277C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 512434532542D02C007B277C /* Main.storyboard */; };
+		512434572542D02D007B277C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 512434562542D02D007B277C /* Assets.xcassets */; };
+		5124345A2542D02D007B277C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 512434582542D02D007B277C /* LaunchScreen.storyboard */; };
+		5124347F2542D597007B277C /* DemoNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5124347E2542D597007B277C /* DemoNetworkManager.swift */; };
+		512434812542D5A7007B277C /* DemoNetworkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512434802542D5A7007B277C /* DemoNetworkConfig.swift */; };
+		512434832542D5B5007B277C /* DemoNetworkLearning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512434822542D5B5007B277C /* DemoNetworkLearning.swift */; };
+		512434852542D5BC007B277C /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512434842542D5BC007B277C /* BaseModel.swift */; };
+		512FEE63254F0BCE009990EF /* StarshipsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512FEE5D254F0BCE009990EF /* StarshipsPresenter.swift */; };
+		512FEE64254F0BCE009990EF /* StarshipsWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512FEE5E254F0BCE009990EF /* StarshipsWorker.swift */; };
+		512FEE65254F0BCE009990EF /* StarshipsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512FEE5F254F0BCE009990EF /* StarshipsRouter.swift */; };
+		512FEE66254F0BCE009990EF /* StarshipsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512FEE60254F0BCE009990EF /* StarshipsModels.swift */; };
+		512FEE67254F0BCE009990EF /* StarshipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512FEE61254F0BCE009990EF /* StarshipsViewController.swift */; };
+		512FEE68254F0BCE009990EF /* StarshipsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512FEE62254F0BCE009990EF /* StarshipsInteractor.swift */; };
+		512FEE6A254F0C09009990EF /* StarshipsRoutingLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512FEE69254F0C09009990EF /* StarshipsRoutingLogic.swift */; };
+		512FEE6C254F0C7B009990EF /* StarshipsPresentationLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512FEE6B254F0C7B009990EF /* StarshipsPresentationLogic.swift */; };
+		512FEE6E254F0CC4009990EF /* StarshipsBusinessLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512FEE6D254F0CC4009990EF /* StarshipsBusinessLogic.swift */; };
+		512FEE70254F0CFB009990EF /* StarshipsDisplayLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512FEE6F254F0CFB009990EF /* StarshipsDisplayLogic.swift */; };
+		512FEE72254F33D4009990EF /* StarshipModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512FEE71254F33D4009990EF /* StarshipModel.swift */; };
+		512FEE75254F46A5009990EF /* AllStarshipsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512FEE74254F46A5009990EF /* AllStarshipsModel.swift */; };
+		517F16F92554023B00B6B2B8 /* StarshipDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517F16F32554023B00B6B2B8 /* StarshipDetailPresenter.swift */; };
+		517F16FA2554023B00B6B2B8 /* StarshipDetailWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517F16F42554023B00B6B2B8 /* StarshipDetailWorker.swift */; };
+		517F16FB2554023B00B6B2B8 /* StarshipDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517F16F52554023B00B6B2B8 /* StarshipDetailRouter.swift */; };
+		517F16FC2554023B00B6B2B8 /* StarshipDetailModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517F16F62554023B00B6B2B8 /* StarshipDetailModels.swift */; };
+		517F16FD2554023B00B6B2B8 /* StarshipDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517F16F72554023B00B6B2B8 /* StarshipDetailViewController.swift */; };
+		517F16FE2554023B00B6B2B8 /* StarshipDetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517F16F82554023B00B6B2B8 /* StarshipDetailInteractor.swift */; };
+		517F1706255402C000B6B2B8 /* StarshipDetailDisplayLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517F1705255402C000B6B2B8 /* StarshipDetailDisplayLogic.swift */; };
+		517F17082554033D00B6B2B8 /* StarshipDetailBusinessLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517F17072554033D00B6B2B8 /* StarshipDetailBusinessLogic.swift */; };
+		517F170A2554036E00B6B2B8 /* StarshipDetailPresentationLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517F17092554036E00B6B2B8 /* StarshipDetailPresentationLogic.swift */; };
+		517F170C255403C000B6B2B8 /* StarshipDetailRoutingLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517F170B255403C000B6B2B8 /* StarshipDetailRoutingLogic.swift */; };
+		517F171325540E6200B6B2B8 /* StarshipDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517F171125540E6200B6B2B8 /* StarshipDetailTableViewCell.swift */; };
+		517F171425540E6200B6B2B8 /* StarshipDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 517F171225540E6200B6B2B8 /* StarshipDetailTableViewCell.xib */; };
+		517F176B255427D900B6B2B8 /* Networking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 517F176A255427D200B6B2B8 /* Networking.framework */; };
+		517F176C255427D900B6B2B8 /* Networking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 517F176A255427D200B6B2B8 /* Networking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		517F1769255427D200B6B2B8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 517F1765255427D200B6B2B8 /* Networking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 512434112542CC6B007B277C;
+			remoteInfo = Networking;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5124346B2542D2CD007B277C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				517F176C255427D900B6B2B8 /* Networking.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5121D54225515BCE006F13E9 /* UITableView+NetworkingDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+NetworkingDemo.swift"; sourceTree = "<group>"; };
+		5121D54425515C87006F13E9 /* StarshipsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipsTableViewCell.swift; sourceTree = "<group>"; };
+		5121D54525515C87006F13E9 /* StarshipsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StarshipsTableViewCell.xib; sourceTree = "<group>"; };
+		5124344A2542D02C007B277C /* NetworkingDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetworkingDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5124344D2542D02C007B277C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		512434542542D02C007B277C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		512434562542D02D007B277C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		512434592542D02D007B277C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		5124345B2542D02D007B277C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5124347E2542D597007B277C /* DemoNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoNetworkManager.swift; sourceTree = "<group>"; };
+		512434802542D5A7007B277C /* DemoNetworkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoNetworkConfig.swift; sourceTree = "<group>"; };
+		512434822542D5B5007B277C /* DemoNetworkLearning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoNetworkLearning.swift; sourceTree = "<group>"; };
+		512434842542D5BC007B277C /* BaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
+		512FEE5D254F0BCE009990EF /* StarshipsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipsPresenter.swift; sourceTree = "<group>"; };
+		512FEE5E254F0BCE009990EF /* StarshipsWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipsWorker.swift; sourceTree = "<group>"; };
+		512FEE5F254F0BCE009990EF /* StarshipsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipsRouter.swift; sourceTree = "<group>"; };
+		512FEE60254F0BCE009990EF /* StarshipsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipsModels.swift; sourceTree = "<group>"; };
+		512FEE61254F0BCE009990EF /* StarshipsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipsViewController.swift; sourceTree = "<group>"; };
+		512FEE62254F0BCE009990EF /* StarshipsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipsInteractor.swift; sourceTree = "<group>"; };
+		512FEE69254F0C09009990EF /* StarshipsRoutingLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipsRoutingLogic.swift; sourceTree = "<group>"; };
+		512FEE6B254F0C7B009990EF /* StarshipsPresentationLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipsPresentationLogic.swift; sourceTree = "<group>"; };
+		512FEE6D254F0CC4009990EF /* StarshipsBusinessLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipsBusinessLogic.swift; sourceTree = "<group>"; };
+		512FEE6F254F0CFB009990EF /* StarshipsDisplayLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipsDisplayLogic.swift; sourceTree = "<group>"; };
+		512FEE71254F33D4009990EF /* StarshipModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipModel.swift; sourceTree = "<group>"; };
+		512FEE74254F46A5009990EF /* AllStarshipsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllStarshipsModel.swift; sourceTree = "<group>"; };
+		517F16F32554023B00B6B2B8 /* StarshipDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipDetailPresenter.swift; sourceTree = "<group>"; };
+		517F16F42554023B00B6B2B8 /* StarshipDetailWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipDetailWorker.swift; sourceTree = "<group>"; };
+		517F16F52554023B00B6B2B8 /* StarshipDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipDetailRouter.swift; sourceTree = "<group>"; };
+		517F16F62554023B00B6B2B8 /* StarshipDetailModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipDetailModels.swift; sourceTree = "<group>"; };
+		517F16F72554023B00B6B2B8 /* StarshipDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipDetailViewController.swift; sourceTree = "<group>"; };
+		517F16F82554023B00B6B2B8 /* StarshipDetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipDetailInteractor.swift; sourceTree = "<group>"; };
+		517F1705255402C000B6B2B8 /* StarshipDetailDisplayLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipDetailDisplayLogic.swift; sourceTree = "<group>"; };
+		517F17072554033D00B6B2B8 /* StarshipDetailBusinessLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipDetailBusinessLogic.swift; sourceTree = "<group>"; };
+		517F17092554036E00B6B2B8 /* StarshipDetailPresentationLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipDetailPresentationLogic.swift; sourceTree = "<group>"; };
+		517F170B255403C000B6B2B8 /* StarshipDetailRoutingLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipDetailRoutingLogic.swift; sourceTree = "<group>"; };
+		517F171125540E6200B6B2B8 /* StarshipDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarshipDetailTableViewCell.swift; sourceTree = "<group>"; };
+		517F171225540E6200B6B2B8 /* StarshipDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StarshipDetailTableViewCell.xib; sourceTree = "<group>"; };
+		517F1765255427D200B6B2B8 /* Networking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Networking.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		512434472542D02C007B277C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				517F176B255427D900B6B2B8 /* Networking.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5121D53D25515747006F13E9 /* Starships */ = {
+			isa = PBXGroup;
+			children = (
+				512FEE83254F4EC1009990EF /* Cell */,
+				512434782542D4F4007B277C /* Controller */,
+				512434772542D4F2007B277C /* Interactor */,
+				512434762542D4F0007B277C /* Presenter */,
+				512434752542D4EE007B277C /* Worker */,
+				512434742542D4EB007B277C /* Router */,
+				512434732542D4E9007B277C /* Model */,
+			);
+			path = Starships;
+			sourceTree = "<group>";
+		};
+		5121D53E25515751006F13E9 /* StarshipDetail */ = {
+			isa = PBXGroup;
+			children = (
+				517F170F25540DB100B6B2B8 /* Cell */,
+				517F17042554027700B6B2B8 /* Controller */,
+				517F17032554027100B6B2B8 /* Interactor */,
+				517F17022554026C00B6B2B8 /* Presenter */,
+				517F17012554026500B6B2B8 /* Worker */,
+				517F17002554025D00B6B2B8 /* Router */,
+				517F16FF2554025800B6B2B8 /* Model */,
+			);
+			path = StarshipDetail;
+			sourceTree = "<group>";
+		};
+		512434412542D02C007B277C = {
+			isa = PBXGroup;
+			children = (
+				512434612542D2A0007B277C /* NetworkingFramework */,
+				5124344C2542D02C007B277C /* NetworkingDemo */,
+				5124344B2542D02C007B277C /* Products */,
+				512434682542D2CD007B277C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		5124344B2542D02C007B277C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5124344A2542D02C007B277C /* NetworkingDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5124344C2542D02C007B277C /* NetworkingDemo */ = {
+			isa = PBXGroup;
+			children = (
+				512FEE73254F3794009990EF /* Extension */,
+				512434702542D4AB007B277C /* Networking */,
+				5124346C2542D460007B277C /* Resources */,
+				512434722542D4DE007B277C /* Scene */,
+				5124346F2542D497007B277C /* Storyboard */,
+			);
+			path = NetworkingDemo;
+			sourceTree = "<group>";
+		};
+		512434612542D2A0007B277C /* NetworkingFramework */ = {
+			isa = PBXGroup;
+			children = (
+				517F1765255427D200B6B2B8 /* Networking.xcodeproj */,
+			);
+			path = NetworkingFramework;
+			sourceTree = "<group>";
+		};
+		512434682542D2CD007B277C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5124346C2542D460007B277C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				512434712542D4D4007B277C /* Application */,
+				5124346D2542D468007B277C /* Info */,
+				5124346E2542D48A007B277C /* Assets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		5124346D2542D468007B277C /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				5124345B2542D02D007B277C /* Info.plist */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		5124346E2542D48A007B277C /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				512434562542D02D007B277C /* Assets.xcassets */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		5124346F2542D497007B277C /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				512434582542D02D007B277C /* LaunchScreen.storyboard */,
+				512434532542D02C007B277C /* Main.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		512434702542D4AB007B277C /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				5124347D2542D55C007B277C /* Manager */,
+				5124347B2542D555007B277C /* Config */,
+				5124347A2542D553007B277C /* Learning */,
+				512434792542D547007B277C /* Model */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		512434712542D4D4007B277C /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				5124344D2542D02C007B277C /* AppDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		512434722542D4DE007B277C /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				5121D53D25515747006F13E9 /* Starships */,
+				5121D53E25515751006F13E9 /* StarshipDetail */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		512434732542D4E9007B277C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				512FEE76254F497F009990EF /* AllStarships */,
+				512FEE60254F0BCE009990EF /* StarshipsModels.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		512434742542D4EB007B277C /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				512FEE5F254F0BCE009990EF /* StarshipsRouter.swift */,
+				512FEE69254F0C09009990EF /* StarshipsRoutingLogic.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		512434752542D4EE007B277C /* Worker */ = {
+			isa = PBXGroup;
+			children = (
+				512FEE5E254F0BCE009990EF /* StarshipsWorker.swift */,
+			);
+			path = Worker;
+			sourceTree = "<group>";
+		};
+		512434762542D4F0007B277C /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				512FEE5D254F0BCE009990EF /* StarshipsPresenter.swift */,
+				512FEE6B254F0C7B009990EF /* StarshipsPresentationLogic.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		512434772542D4F2007B277C /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				512FEE62254F0BCE009990EF /* StarshipsInteractor.swift */,
+				512FEE6D254F0CC4009990EF /* StarshipsBusinessLogic.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		512434782542D4F4007B277C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				512FEE61254F0BCE009990EF /* StarshipsViewController.swift */,
+				512FEE6F254F0CFB009990EF /* StarshipsDisplayLogic.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		512434792542D547007B277C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				512434842542D5BC007B277C /* BaseModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5124347A2542D553007B277C /* Learning */ = {
+			isa = PBXGroup;
+			children = (
+				512434822542D5B5007B277C /* DemoNetworkLearning.swift */,
+			);
+			path = Learning;
+			sourceTree = "<group>";
+		};
+		5124347B2542D555007B277C /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				512434802542D5A7007B277C /* DemoNetworkConfig.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		5124347D2542D55C007B277C /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				5124347E2542D597007B277C /* DemoNetworkManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		512FEE73254F3794009990EF /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				5121D54225515BCE006F13E9 /* UITableView+NetworkingDemo.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		512FEE76254F497F009990EF /* AllStarships */ = {
+			isa = PBXGroup;
+			children = (
+				512FEE74254F46A5009990EF /* AllStarshipsModel.swift */,
+			);
+			path = AllStarships;
+			sourceTree = "<group>";
+		};
+		512FEE83254F4EC1009990EF /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				5121D54425515C87006F13E9 /* StarshipsTableViewCell.swift */,
+				5121D54525515C87006F13E9 /* StarshipsTableViewCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		517F16FF2554025800B6B2B8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				517F170D2554042A00B6B2B8 /* Starship */,
+				517F16F62554023B00B6B2B8 /* StarshipDetailModels.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		517F17002554025D00B6B2B8 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				517F16F52554023B00B6B2B8 /* StarshipDetailRouter.swift */,
+				517F170B255403C000B6B2B8 /* StarshipDetailRoutingLogic.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		517F17012554026500B6B2B8 /* Worker */ = {
+			isa = PBXGroup;
+			children = (
+				517F16F42554023B00B6B2B8 /* StarshipDetailWorker.swift */,
+			);
+			path = Worker;
+			sourceTree = "<group>";
+		};
+		517F17022554026C00B6B2B8 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				517F16F32554023B00B6B2B8 /* StarshipDetailPresenter.swift */,
+				517F17092554036E00B6B2B8 /* StarshipDetailPresentationLogic.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		517F17032554027100B6B2B8 /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				517F16F82554023B00B6B2B8 /* StarshipDetailInteractor.swift */,
+				517F17072554033D00B6B2B8 /* StarshipDetailBusinessLogic.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		517F17042554027700B6B2B8 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				517F16F72554023B00B6B2B8 /* StarshipDetailViewController.swift */,
+				517F1705255402C000B6B2B8 /* StarshipDetailDisplayLogic.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		517F170D2554042A00B6B2B8 /* Starship */ = {
+			isa = PBXGroup;
+			children = (
+				512FEE71254F33D4009990EF /* StarshipModel.swift */,
+			);
+			path = Starship;
+			sourceTree = "<group>";
+		};
+		517F170F25540DB100B6B2B8 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				517F171125540E6200B6B2B8 /* StarshipDetailTableViewCell.swift */,
+				517F171225540E6200B6B2B8 /* StarshipDetailTableViewCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		517F1766255427D200B6B2B8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				517F176A255427D200B6B2B8 /* Networking.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		512434492542D02C007B277C /* NetworkingDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5124345E2542D02D007B277C /* Build configuration list for PBXNativeTarget "NetworkingDemo" */;
+			buildPhases = (
+				512434462542D02C007B277C /* Sources */,
+				512434472542D02C007B277C /* Frameworks */,
+				512434482542D02C007B277C /* Resources */,
+				5124346B2542D2CD007B277C /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NetworkingDemo;
+			productName = NetworkingDemo;
+			productReference = 5124344A2542D02C007B277C /* NetworkingDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		512434422542D02C007B277C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = "YAGIZHAN AKDUMAN";
+				TargetAttributes = {
+					512434492542D02C007B277C = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 512434452542D02C007B277C /* Build configuration list for PBXProject "NetworkingDemo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 512434412542D02C007B277C;
+			productRefGroup = 5124344B2542D02C007B277C /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 517F1766255427D200B6B2B8 /* Products */;
+					ProjectRef = 517F1765255427D200B6B2B8 /* Networking.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				512434492542D02C007B277C /* NetworkingDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		517F176A255427D200B6B2B8 /* Networking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Networking.framework;
+			remoteRef = 517F1769255427D200B6B2B8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		512434482542D02C007B277C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5124345A2542D02D007B277C /* LaunchScreen.storyboard in Resources */,
+				517F171425540E6200B6B2B8 /* StarshipDetailTableViewCell.xib in Resources */,
+				512434572542D02D007B277C /* Assets.xcassets in Resources */,
+				512434552542D02C007B277C /* Main.storyboard in Resources */,
+				5121D54725515C87006F13E9 /* StarshipsTableViewCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		512434462542D02C007B277C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				517F17082554033D00B6B2B8 /* StarshipDetailBusinessLogic.swift in Sources */,
+				512FEE70254F0CFB009990EF /* StarshipsDisplayLogic.swift in Sources */,
+				517F16F92554023B00B6B2B8 /* StarshipDetailPresenter.swift in Sources */,
+				512FEE64254F0BCE009990EF /* StarshipsWorker.swift in Sources */,
+				512434852542D5BC007B277C /* BaseModel.swift in Sources */,
+				5124347F2542D597007B277C /* DemoNetworkManager.swift in Sources */,
+				5121D54325515BCE006F13E9 /* UITableView+NetworkingDemo.swift in Sources */,
+				517F170A2554036E00B6B2B8 /* StarshipDetailPresentationLogic.swift in Sources */,
+				512434832542D5B5007B277C /* DemoNetworkLearning.swift in Sources */,
+				517F16FB2554023B00B6B2B8 /* StarshipDetailRouter.swift in Sources */,
+				517F1706255402C000B6B2B8 /* StarshipDetailDisplayLogic.swift in Sources */,
+				512FEE6C254F0C7B009990EF /* StarshipsPresentationLogic.swift in Sources */,
+				512FEE65254F0BCE009990EF /* StarshipsRouter.swift in Sources */,
+				5124344E2542D02C007B277C /* AppDelegate.swift in Sources */,
+				517F16FE2554023B00B6B2B8 /* StarshipDetailInteractor.swift in Sources */,
+				512FEE63254F0BCE009990EF /* StarshipsPresenter.swift in Sources */,
+				517F171325540E6200B6B2B8 /* StarshipDetailTableViewCell.swift in Sources */,
+				517F170C255403C000B6B2B8 /* StarshipDetailRoutingLogic.swift in Sources */,
+				517F16FA2554023B00B6B2B8 /* StarshipDetailWorker.swift in Sources */,
+				512FEE66254F0BCE009990EF /* StarshipsModels.swift in Sources */,
+				512FEE68254F0BCE009990EF /* StarshipsInteractor.swift in Sources */,
+				512FEE6A254F0C09009990EF /* StarshipsRoutingLogic.swift in Sources */,
+				512FEE6E254F0CC4009990EF /* StarshipsBusinessLogic.swift in Sources */,
+				517F16FD2554023B00B6B2B8 /* StarshipDetailViewController.swift in Sources */,
+				512FEE72254F33D4009990EF /* StarshipModel.swift in Sources */,
+				512FEE75254F46A5009990EF /* AllStarshipsModel.swift in Sources */,
+				5121D54625515C87006F13E9 /* StarshipsTableViewCell.swift in Sources */,
+				512FEE67254F0BCE009990EF /* StarshipsViewController.swift in Sources */,
+				512434812542D5A7007B277C /* DemoNetworkConfig.swift in Sources */,
+				517F16FC2554023B00B6B2B8 /* StarshipDetailModels.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		512434532542D02C007B277C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				512434542542D02C007B277C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		512434582542D02D007B277C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				512434592542D02D007B277C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5124345C2542D02D007B277C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		5124345D2542D02D007B277C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5124345F2542D02D007B277C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = NetworkingDemo/Resources/Info/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.YagizhanAkduman.NetworkingDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		512434602542D02D007B277C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = NetworkingDemo/Resources/Info/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.YagizhanAkduman.NetworkingDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		512434452542D02C007B277C /* Build configuration list for PBXProject "NetworkingDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5124345C2542D02D007B277C /* Debug */,
+				5124345D2542D02D007B277C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5124345E2542D02D007B277C /* Build configuration list for PBXNativeTarget "NetworkingDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5124345F2542D02D007B277C /* Debug */,
+				512434602542D02D007B277C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 512434422542D02C007B277C /* Project object */;
+}
