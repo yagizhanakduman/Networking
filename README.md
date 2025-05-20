@@ -119,11 +119,20 @@ Provides both **async/await** and closure‑based APIs, chainable syntax, SSL ce
 
 ### Swift Package Manager
 
-*
+```swift
+.package(url: "https://github.com/***/Networking.git", branch: "main")
+```
 
-### Manual
+Add **Networking** to your target:
 
-*
+```swift
+.target(
+    name: "YourApp",
+    dependencies: [
+        .product(name: "Networking", package: "Networking")
+    ]
+)
+```
 
 ---
 
