@@ -120,7 +120,7 @@ Provides both **async/await** and closure‑based APIs, chainable syntax, SSL ce
 ### Swift Package Manager
 
 ```swift
-.package(url: "https://github.com/***/Networking.git", branch: "main")
+.package(url: "https://github.com/yagizhanakduman/Networking.git", branch: "main")
 ```
 
 Add **Networking** to your target:
