@@ -286,6 +286,8 @@ extension ChainRequest {
     ///
     /// - Parameters:
     ///
+    ///   - queue: The `DispatchQueue` on which the completion handler will be executed (default: `.main`).
+    ///
     ///   - decoder: A `JSONDecoder` instance used for decoding the response body (default: `JSONDecoder()`).
     ///              - Even though the server is expected to return no content, the decoder is required for consistency.
     ///
@@ -316,11 +318,11 @@ extension ChainRequest {
     ///
     /// - Thread Safety:
     ///   - This method is thread-safe.
-    ///   - The `completion` block is called on the current queue (default is `.main` in `responseDecodable`).
-    ///     Use `DispatchQueue.main.async` if UI updates are required.
+    ///   - The `completion` is invoked on the specified `queue` (default: `.main`).
+    ///     If performing UI updates, ensure execution occurs on the main thread.
     @discardableResult
-    public func responseVoid(decoder: JSONDecoder = JSONDecoder(), completion: @escaping (NetworkingResponse<Void>) -> Void) -> Self {
-        self.responseDecodable(of: VoidPlaceholder.self, decoder: decoder) { networkResponse in
+    public func responseVoid(queue: DispatchQueue = .main, decoder: JSONDecoder = JSONDecoder(), completion: @escaping (NetworkingResponse<Void>) -> Void) -> Self {
+        self.responseDecodable(of: VoidPlaceholder.self, queue: queue, decoder: decoder) { networkResponse in
             let voidResult: Result<Void, NetworkError> = networkResponse.result.map { _ in () }
             let response = NetworkingResponse<Void>(request: networkResponse.request, response: networkResponse.response, data: networkResponse.data, result: voidResult)
             completion(response)

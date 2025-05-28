@@ -553,6 +553,24 @@ extension Request {
                 completion(networkingResponse)
                 return
             }
+            /// If it's VoidPlaceholder, handle it with a special check and return the NetworkingResponse without decoding the data.
+            if T.self == VoidPlaceholder.self {
+                guard let voidPlaceholder = VoidPlaceholder() as? T else {
+                    let networkingResponse: NetworkingResponse<T> = NetworkingResponse(request: request, response: response, data: data, result: .failure(.noData))
+                    completion(networkingResponse)
+                    return
+                }
+                queue.async {
+                    let successResponse: NetworkingResponse<T> = NetworkingResponse(
+                        request: request,
+                        response: response,
+                        data: data,
+                        result: .success(voidPlaceholder)
+                    )
+                    completion(successResponse)
+                }
+                return
+            }
             /// Attempt to decode the response data; return an error if decoding fails.
             do {
                 let decoded: T = try self.decodeData(data, with: decoder)

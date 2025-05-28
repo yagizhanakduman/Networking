@@ -71,4 +71,7 @@ struct VoidPlaceholder: Decodable & Equatable {
         /// No fields to decode; simply ignore any response body.
     }
     
+    /// Allows `VoidPlaceholder()` calls to compile
+    init() {}
+    
 }
