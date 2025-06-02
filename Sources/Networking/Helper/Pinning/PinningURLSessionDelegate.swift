@@ -157,8 +157,8 @@ extension PinningURLSessionDelegate: URLSessionDelegate {
             let pinnedDatas = pinnedCertificatesByHost[host],
             !pinnedDatas.isEmpty
         else {
-            /// No pinned certificates found for the requested host, so cancel the connection.
-            completionHandler(.cancelAuthenticationChallenge, nil)
+            /// No pinned certificates found for the requested host, do not cancel the connection, let the system verify.
+            completionHandler(.performDefaultHandling, nil)
             return
         }
         /// Retrieve the server's certificate chain from the serverTrust object. We need to compare it against our pinned data.
