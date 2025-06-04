@@ -571,6 +571,11 @@ extension Request {
                 }
                 return
             }
+            /// Store the response in cache if caching is enabled.
+            if let cachePolicy = cachePolicy, cachePolicy.storeCache, let finalURL = request.url, let cache = self.cache {
+                self.logger?.logMessage(message: "storeCache = true, caching response for \(finalURL.absoluteString)", level: .debug, logPrivacy: .public)
+                cache.setResponse(data, for: finalURL, expireTime: cachePolicy.expireTime)
+            }
             /// Attempt to decode the response data; return an error if decoding fails.
             do {
                 let decoded: T = try self.decodeData(data, with: decoder)
