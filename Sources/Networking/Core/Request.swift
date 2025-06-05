@@ -570,6 +570,11 @@ extension Request {
                     completion(successResponse)
                 }
                 return
+            } else if T.self == Data.self, let decoded = data as? T {
+                queue.async {
+                    let networkingResponse: NetworkingResponse<T> = NetworkingResponse(request: request, response: response, data: data, result: .success(decoded))
+                    completion(networkingResponse)
+                }
             }
             /// Store the response in cache if caching is enabled.
             if let cachePolicy = cachePolicy, cachePolicy.storeCache, let finalURL = request.url, let cache = self.cache {
