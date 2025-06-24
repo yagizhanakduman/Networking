@@ -83,7 +83,7 @@ extension HTTPHeader {
 
     /// Returns an `Accept-Language` header.
     ///
-    /// Alamofire offers a default Accept-Language header that accumulates and encodes the system's preferred languages.
+    /// Default Accept-Language header that accumulates and encodes the system's preferred languages.
     /// Use `HTTPHeader.defaultAcceptLanguage`.
     ///
     /// - Parameter value: The `Accept-Language` value.
@@ -95,7 +95,7 @@ extension HTTPHeader {
 
     /// Returns an `Accept-Encoding` header.
     ///
-    /// Alamofire offers a default accept encoding value that provides the most common values. Use
+    /// A default accept encoding value that provides the most common values. Use
     /// `HTTPHeader.defaultAcceptEncoding`.
     ///
     /// - Parameter value: The `Accept-Encoding` value.
@@ -128,7 +128,7 @@ extension HTTPHeader {
 
     /// Returns an `Authorization` header.
     ///
-    /// Alamofire provides built-in methods to produce `Authorization` headers. For a Basic `Authorization` header use
+    /// Provides built-in methods to produce `Authorization` headers. For a Basic `Authorization` header use
     /// `HTTPHeader.authorization(username:password:)`. For a Bearer `Authorization` header, use
     /// `HTTPHeader.authorization(bearerToken:)`.
     ///
@@ -159,7 +159,7 @@ extension HTTPHeader {
 
     /// Returns a `Content-Type` header.
     ///
-    /// All Alamofire `ParameterEncoding`s and `ParameterEncoder`s set the `Content-Type` of the request, so it may not
+    /// Set the `Content-Type` of the request, so it may not
     /// be necessary to manually set this value.
     ///
     /// - Parameter value: The `Content-Type` value.
