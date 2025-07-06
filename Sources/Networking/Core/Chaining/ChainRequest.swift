@@ -377,9 +377,9 @@ extension ChainRequest {
     ///   - The `completion` closure will be called on the specified `queue`. Use `DispatchQueue.main.async` for UI updates.
     @discardableResult
     public func responseData(queue: DispatchQueue = .main, completion: @escaping (NetworkingResponse<Data>) -> Void) -> Self {
-        /// Internally re-use the existing `.responseDecodable(of: Data.self)` helper
+        /// Internally re-use the existing `.responseDecodable(of: VoidPlaceholder.self)` helper
         /// to retrieve the raw binary buffer from the network response.
-        self.responseDecodable(of: Data.self, queue: queue) { dataResponse in
+        self.responseDecodable(of: VoidPlaceholder.self, queue: queue) { dataResponse in
             /// Transform the response into a `Result<Data, NetworkError>` while preserving any errors.
             let rawResult: Result<Data, NetworkError> = {
                 if let error = dataResponse.error {
