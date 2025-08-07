@@ -72,6 +72,12 @@ public class PinningURLSessionDelegate: NSObject {
     ///
     /// - Used for forwarding `URLSessionDownloadDelegate` events from download sessions.
     weak var downloadDelegate: URLSessionDownloadDelegate?
+
+    /// Delegate responsible for handling streaming-related events during data tasks.
+    ///
+    /// - Used for forwarding `URLSessionDataDelegate` events when processing streamed responses,
+    ///   such as `text/event-stream` or chunked JSON streams.
+    weak var streamDelegate: URLSessionDataDelegate?
     
     /// Initializes a new `PinningURLSessionDelegate` using the provided dictionary of hostnames and their
     /// corresponding certificate file names (without the `.cer` extension).
@@ -206,15 +212,17 @@ extension PinningURLSessionDelegate: URLSessionDelegate {
 // MARK: - URLSessionTaskDelegate & URLSessionDataDelegate
 extension PinningURLSessionDelegate: URLSessionTaskDelegate, URLSessionDataDelegate {
     
-    /// Forwards task completion events to the `uploadDelegate`, if set.
+    /// Handles task completion events for all session tasks, including upload, download, and stream tasks.
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         uploadDelegate?.urlSession?(session, task: task, didCompleteWithError: error)
         downloadDelegate?.urlSession?(session, task: task, didCompleteWithError: error)
+        streamDelegate?.urlSession?(session, task: task, didCompleteWithError: error)
     }
     
-    /// Forwards data-receiving events to the `uploadDelegate`, if set.
+    /// Handles data reception events for `URLSessionDataTask`, typically used in upload or streaming scenarios.
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         uploadDelegate?.urlSession?(session, dataTask: dataTask, didReceive: data)
+        streamDelegate?.urlSession?(session, dataTask: dataTask, didReceive: data)
     }
     
 }
@@ -222,7 +230,7 @@ extension PinningURLSessionDelegate: URLSessionTaskDelegate, URLSessionDataDeleg
 // MARK: - URLSessionTaskDelegate & URLSessionDataDelegate
 extension PinningURLSessionDelegate: URLSessionDownloadDelegate {
     
-    /// Forwards file download completion events to the `downloadDelegate`, if set.
+    /// Handles file download completion events for `URLSessionDownloadTask`.
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         downloadDelegate?.urlSession(session, downloadTask: downloadTask, didFinishDownloadingTo: location)
     }
