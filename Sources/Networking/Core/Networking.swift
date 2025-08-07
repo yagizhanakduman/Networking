@@ -197,7 +197,7 @@ open class Networking {
         self.connectionMonitor = ConnectionMonitor()
         self.downloader = Downloader(session: session, pinningDelegate: pinningDelegate, interceptor: interceptor, logger: logger, connectionMonitor: connectionMonitor)
         self.uploader = Uploader(session: session, pinningDelegate: pinningDelegate, interceptor: interceptor, logger: logger, connectionMonitor: connectionMonitor)
-        self.request = Request(urlSession: session, interceptor: interceptor, cache: cache, logger: logger, connectionMontitor: connectionMonitor)
+        self.request = Request(urlSession: session, pinningDelegate: pinningDelegate, interceptor: interceptor, cache: cache, logger: logger, connectionMontitor: connectionMonitor)
     }
     
 }
