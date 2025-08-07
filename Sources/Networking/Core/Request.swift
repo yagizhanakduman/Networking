@@ -92,6 +92,32 @@ protocol RequestProtocol: AnyObject {
     ///   - Supports optional request retries up to `retryCount`.
     ///   - Integrates with caching logic if `cachePolicy` is provided and supported by the conforming type.
     func request<T: Decodable>(_ config: RequestConfig, retryCount: Int, cachePolicy: CachePolicy?, queue: DispatchQueue, decoder: JSONDecoder, completion: @escaping (NetworkingResponse<T>) -> Void)
+
+    /// Initiates a streaming HTTP request using the provided `RequestConfig`, decoding incoming data chunks into the specified `Decodable` type.
+    ///
+    /// This method sets up a `URLSessionDataTask` that receives streamed data from the server (e.g., via `text/event-stream` or incremental JSON).
+    /// Each decoded chunk is emitted to the `onChunk` closure, and the stream's completion or failure is reported via the `completion` closure.
+    ///
+    /// - Parameters:
+    ///   - config: A `RequestConfig` instance that defines the URL, HTTP method, headers, query/body parameters, etc.
+    ///   - type: The `Decodable` type into which each received chunk of data will be decoded.
+    ///   - retryCount: The number of retry attempts allowed in case of failure (default is `0`).
+    ///   - cachePolicy: An optional `CachePolicy` for managing whether the request should use or update cached data.
+    ///   - queue: The `DispatchQueue` on which both `onChunk` and `completion` callbacks will be executed (default: `.main`).
+    ///   - decodingStrategy: Defines how incoming stream data is decoded. Use `.plainJSON` for line-delimited JSON,
+    ///                       or `.eventStream` for `text/event-stream` format with `data:` prefixes.
+    ///   - onChunk: A closure called each time a new chunk of data is decoded successfully or with an error. Each callback includes a `NetworkingResponse<T>`.
+    ///   - completion: A closure called when the stream ends or an unrecoverable error occurs. It returns a `NetworkingResponse<Void>`.
+    ///
+    /// - Returns: The `URLSessionDataTask` instance responsible for managing the stream, or `nil` if the request could not be started.
+    ///
+    /// - Note:
+    ///   - Use `.eventStream` decoding strategy for Server-Sent Events (SSE) where each message is prefixed with `data:`.
+    ///   - The method is cancellable via the returned `URLSessionDataTask`.
+    ///   - Decoding failures for individual chunks do not stop the stream. Each chunk is handled independently.
+    @discardableResult
+    func stream<T: Decodable>(_ config: RequestConfig, of type: T.Type, retryCount: Int, cachePolicy: CachePolicy?, queue: DispatchQueue, decodingStrategy: StreamDecodingStrategy, onChunk: @escaping (NetworkingResponse<T>) -> Void, completion: @escaping (NetworkingResponse<Void>) -> Void) -> URLSessionDataTask?
+    
 }
 
 /// A network request handler that manages HTTP requests, caching, logging, connection monitor and request interception.
@@ -114,10 +140,10 @@ protocol RequestProtocol: AnyObject {
 /// ```
 /// This class is intended to be used only by `Networking`.
 /// Please DO NOT create or use this class directly.
-open class Request: RequestProtocol {
+open class Request: NSObject, RequestProtocol {
     
     /// The URL session used to execute network requests.
-    private(set) var urlSession: URLSession
+    private(set) var urlSession: URLSession?
     
     /// Optional interceptor that modifies requests before sending them or determines retry behavior.
     private(set) var interceptor: RequestInterceptor?
@@ -129,7 +155,13 @@ open class Request: RequestProtocol {
     private(set) var cache: ResponseCaching?
     
     /// A connection monitor that tracks network availability.
-    private(set) var connectionMonitor: ConnectionMonitor
+    private(set) var connectionMonitor: ConnectionMonitor?
+
+    /// A serial dispatch queue used to synchronize access to the `activeStreams` dictionary.
+    private let streamLock = DispatchQueue(label: "networking.request.streamHandlers.lock")
+    
+    /// A dictionary that tracks active stream handlers by their associated `URLSessionTask` identifiers.
+    private var activeStreams: [Int: AnyStreamHandler] = [:]
     
     /// Initializes the `Request` handler with optional interceptor, cache, logging, and network monitoring support.
     ///
@@ -141,6 +173,9 @@ open class Request: RequestProtocol {
     ///   - urlSession: The `URLSession` used for network requests.
     ///                 - This session handles all HTTP requests and responses.
     ///                 - It must be properly configured for background or foreground tasks.
+    ///   - pinningDelegate: An optional `PinningURLSessionDelegate` used for **SSL certificate pinning**.
+    ///                      - Assigns itself as the session delegate for enforcing secure connections.
+    ///                      - If `nil`, certificate pinning is disabled.
     ///   - interceptor: An optional `RequestInterceptor` for modifying requests and handling retries.
     ///                 - If provided, it allows preprocessing requests before they are sent.
     ///                 - Can be used for adding authentication headers, retrying failed requests, etc.
@@ -172,8 +207,10 @@ open class Request: RequestProtocol {
     /// - Thread Safety:
     ///   - This initializer should be called from a **safe thread context**, especially
     ///     when multiple network handlers are being initialized in parallel.
-    public init(urlSession: URLSession, interceptor: RequestInterceptor? = nil, cache: ResponseCaching? = nil, logger: NetworkLogger? = nil, connectionMontitor: ConnectionMonitor) {
-        self.urlSession = urlSession
+    public init(urlSession: URLSession, pinningDelegate: PinningURLSessionDelegate? = nil, interceptor: RequestInterceptor? = nil, cache: ResponseCaching? = nil, logger: NetworkLogger? = nil, connectionMontitor: ConnectionMonitor) {
+        super.init()
+        pinningDelegate?.streamDelegate = self
+        self.urlSession = URLSession(configuration: urlSession.configuration, delegate: pinningDelegate, delegateQueue: urlSession.delegateQueue)
         self.interceptor = interceptor
         self.cache = cache
         self.logger = logger
@@ -256,7 +293,7 @@ extension Request {
             }
         }
         /// Check if the device has an active internet connection before proceeding with the network request.
-        if !connectionMonitor.isReachable {
+        if let connectionMonitor = connectionMonitor, !connectionMonitor.isReachable {
             logger?.logMessage(message: "Request cancel, no internet connection, throwing .noInternetConnection", level: .error, logPrivacy: .public)
             /// If the device is offline, throw a `NetworkError.noInternetConnection` error.
             /// This prevents unnecessary network calls and allows the caller to handle offline scenarios gracefully.
@@ -272,6 +309,9 @@ extension Request {
         logger?.log(request: urlRequest)
         /// dataTask do catch block
         do {
+            guard let urlSession = urlSession else {
+                throw URLError(.badURL)
+            }
             /// Execute the network request using `URLSession`.
             let (data, response) = try await urlSession.data(for: urlRequest)
             /// Log response data.
@@ -480,7 +520,7 @@ extension Request {
     ///   - UI updates (e.g., displaying results) should be performed on the **main thread** inside the completion handler.
     private func performRequest<T: Decodable>(_ request: URLRequest, config: RequestConfig, retryCount: Int, cachePolicy: CachePolicy? = nil, queue: DispatchQueue, decoder: JSONDecoder, completion: @escaping (NetworkingResponse<T>) -> Void) {
         /// Check if the device has an active internet connection before proceeding with the network request.
-        if !connectionMonitor.isReachable {
+        if let connectionMonitor = connectionMonitor, !connectionMonitor.isReachable {
             logger?.logMessage(message: "Request cancel, no internet connection (completion) => .noInternetConnection", level: .error, logPrivacy: .public)
             /// If the device is offline, throw a `NetworkError.noInternetConnection` error.
             /// This prevents unnecessary network calls and allows the caller to handle offline scenarios gracefully.
@@ -516,7 +556,7 @@ extension Request {
         /// Log the outgoing request.
         logger?.log(request: request)
         /// Start the network request using `URLSession`.
-        let task = urlSession.dataTask(with: request) { data, response, error in
+        let task = urlSession?.dataTask(with: request) { data, response, error in
             /// Log response, response data, and error if any.
             self.logger?.log(responseData: data, response: response, error: error)
             /// Check if an error occurred.
@@ -594,7 +634,7 @@ extension Request {
             }
         }
         /// Resume the task to start execution.
-        task.resume()
+        task?.resume()
     }
     
     /// Handles request retries based on the provided `RequestInterceptor`, retry count, and network error, using a completion handler.
@@ -660,6 +700,174 @@ extension Request {
                 self.performRequest(urlRequest, config: config, retryCount: retryCount + 1, cachePolicy: cachePolicy, queue: queue, decoder: decoder, completion: completion)
             }
         }
+    }
+    
+}
+
+// MARK: - Request - Stream
+extension Request {
+    
+    /// Executes a streaming HTTP request using the given `RequestConfig` and decodes streamed chunks into a `Decodable` type `T`.
+    ///
+    /// This method handles optional request adaptation via a `RequestInterceptor` before starting the stream.
+    /// It supports standard JSON as well as Server-Sent Events (`text/event-stream`) via `StreamDecodingStrategy`.
+    ///
+    /// - Parameters:
+    ///   - config: A `RequestConfig` describing the URL, HTTP method, headers, query/body parameters.
+    ///   - type: The `Decodable` type expected for each streamed chunk.
+    ///   - retryCount: Number of retry attempts for the request in case of transient failures. Defaults to 0.
+    ///   - cachePolicy: An optional `CachePolicy` to use cached data before starting the stream.
+    ///   - queue: The dispatch queue on which `onChunk` and `completion` handlers are invoked. Defaults to `.main`.
+    ///   - decodingStrategy: The streaming decoding strategy to use (e.g., `.plainJSON`, `.eventStream`).
+    ///   - onChunk: Closure called every time a new decoded chunk of type `T` is received from the stream.
+    ///   - completion: Closure called once the stream finishes or an error occurs. Returns a `NetworkingResponse<Void>`.
+    ///
+    /// - Returns: A `URLSessionDataTask` if the stream starts immediately; otherwise `nil` (e.g., when using interceptor).
+    ///
+    /// - Note:
+    ///   - If an interceptor is provided, this function performs async adaptation and defers the request start.
+    ///   - If caching is enabled and valid data exists in cache, it is returned immediately without starting a stream.
+    ///   - Completion is guaranteed to be called once per invocation, even in error or cache-only scenarios.
+    ///
+    /// - Thread Safety:
+    ///   - Stream handlers are registered under a locked dictionary (`activeStreams`) using `DispatchQueue.sync`.
+    ///
+    /// - Example Usage:
+    ///   ```swift
+    ///   networking.stream(
+    ///       url: "https://api.example.com/stream",
+    ///       of: ChatChunk.self,
+    ///       decodingStrategy: .eventStream,
+    ///       onChunk: { response in
+    ///           print("New chunk:", response.result)
+    ///       },
+    ///       completion: { result in
+    ///           print("Stream finished:", result)
+    ///       }
+    ///   )
+    ///   ```
+    @discardableResult
+    public func stream<T: Decodable>( _ config: RequestConfig, of type: T.Type, retryCount: Int = 0, cachePolicy: CachePolicy? = nil, queue: DispatchQueue = .main, decodingStrategy: StreamDecodingStrategy, onChunk: @escaping (NetworkingResponse<T>) -> Void, completion: @escaping (NetworkingResponse<Void>) -> Void) -> URLSessionDataTask? {
+        /// Build URLRequest
+        let urlRequestResult: Result<URLRequest, NetworkError> = Result {
+            try buildURLRequest(config: config)
+        }.mapError { _ in .invalidRequest }
+        
+        switch urlRequestResult {
+        case .failure(let err):
+            queue.async { completion(.init(request: nil, response: nil, data: nil, result: .failure(err))) }
+            return nil
+        case .success(var urlRequest):
+            /// Intercept / adapt if needed
+            if let interceptor = interceptor {
+                Task {
+                    do {
+                        urlRequest = try await interceptor.adapt(urlRequest)
+                        /// Start with Adapted request
+                        _ = self.performStream(
+                            urlRequest: urlRequest,
+                            of: type,
+                            retryCount: retryCount,
+                            cachePolicy: cachePolicy,
+                            queue: queue,
+                            decodingStrategy: decodingStrategy,
+                            onChunk: onChunk,
+                            completion: completion
+                        )
+                    } catch {
+                        let err = NetworkError.unknown(error)
+                        queue.async { completion(.init(request: urlRequest, response: nil, data: nil, result: .failure(err))) }
+                    }
+                }
+                return nil
+            } else {
+                /// No interceptor, start immediately
+                return performStream(
+                    urlRequest: urlRequest,
+                    of: type,
+                    retryCount: retryCount,
+                    cachePolicy: cachePolicy,
+                    queue: queue,
+                    decodingStrategy: decodingStrategy,
+                    onChunk: onChunk,
+                    completion: completion
+                )
+            }
+        }
+    }
+    
+    /// Starts a streaming request using an already constructed `URLRequest`.
+    ///
+    /// This function handles optional caching, prepares a streaming handler, and initiates a `URLSessionDataTask`.
+    /// Streamed responses are decoded incrementally and dispatched via the provided `onChunk` closure.
+    ///
+    /// - Parameters:
+    ///   - urlRequest: The prepared `URLRequest` to execute.
+    ///   - type: The expected `Decodable` type for each streamed response chunk.
+    ///   - retryCount: Number of retry attempts for recoverable failures (not currently implemented in stream).
+    ///   - cachePolicy: Optional `CachePolicy` used to check and return cached data if present.
+    ///   - queue: The `DispatchQueue` on which all response handlers (`onChunk`, `completion`) will be called.
+    ///   - decodingStrategy: Defines how incoming data is decoded, e.g., `.plainJSON` or `.eventStream`.
+    ///   - onChunk: Closure called for each successfully decoded streamed chunk of type `T`.
+    ///   - completion: Closure called when the stream ends or fails. Receives a `NetworkingResponse<Void>`.
+    ///
+    /// - Returns: The started or cancelled `URLSessionDataTask`. If streaming is skipped (due to cache or missing session),
+    ///            a cancelled dummy task is returned.
+    ///
+    /// - Note:
+    ///   - If caching is enabled and cached data is found, the response is returned immediately via `onChunk` and `completion`.
+    ///   - The stream handler is stored in `activeStreams`, keyed by the `URLSessionTask` identifier, for lifecycle and decoding management.
+    ///   - If no `urlSession` exists, a dummy task is returned and the `completion` closure is called with an error.
+    ///
+    /// - Thread Safety:
+    ///   - Access to `activeStreams` is synchronized using `streamLock` to prevent race conditions.
+    private func performStream<T: Decodable>(urlRequest: URLRequest, of type: T.Type, retryCount: Int, cachePolicy: CachePolicy?, queue: DispatchQueue, decodingStrategy: StreamDecodingStrategy, onChunk: @escaping (NetworkingResponse<T>) -> Void, completion: @escaping (NetworkingResponse<Void>) -> Void) -> URLSessionDataTask {
+        /// Optional URLSession Check
+        guard let urlSession = urlSession else {
+            let error = NetworkError.invalidURL
+            queue.async {
+                completion(NetworkingResponse(request: urlRequest, response: nil, data: nil, result: .failure(error)))
+            }
+            let dummyURL = URL(fileURLWithPath: "/dev/null")
+            let dummyTask = URLSession.shared.dataTask(with: dummyURL)
+            dummyTask.cancel()
+            return dummyTask
+        }
+        /// Cache control
+        if let policy = cachePolicy, policy.useCache, let cache = cache,
+           let finalURL = urlRequest.url, let cachedData = cache.getResponse(for: finalURL) {
+            /// Decode cachedData, then trigger onChunk
+            if let chunk = try? JSONDecoder().decode(T.self, from: cachedData) {
+                queue.async {
+                    onChunk(NetworkingResponse(request: urlRequest, response: nil, data: cachedData, result: .success(chunk)))
+                }
+            }
+            /// Signal finish
+            queue.async {
+                completion(NetworkingResponse(request: urlRequest, response: nil, data: nil, result: .success(())))
+            }
+            /// Return Dummy Task
+            let dummyURL = URL(fileURLWithPath: "/dev/null")
+            let dummyTask = urlSession.dataTask(with: dummyURL)
+            dummyTask.cancel()
+            return dummyTask
+        }
+        
+        /// Save Task Handler
+        let task = urlSession.dataTask(with: urlRequest)
+        streamLock.sync {
+            activeStreams[task.taskIdentifier] = StreamTaskHandler<T>(
+                decoder: JSONDecoder(),
+                decodingStrategy: decodingStrategy,
+                queue: queue,
+                onChunk: onChunk,
+                completion: completion,
+                cachePolicy: cachePolicy,
+                request: urlRequest
+            )
+        }
+        task.resume()
+        return task
     }
     
 }
@@ -847,6 +1055,42 @@ extension Request {
         }
         /// Otherwise, wrap it in `NetworkError.unknown` to retain the original error details.
         return .unknown(error)
+    }
+    
+}
+
+// MARK: - URLSessionDataDelegate - Stream
+extension Request: URLSessionDataDelegate {
+    
+    /// Receives incremental data from a streaming `URLSessionDataTask` and forwards it to the active stream handler.
+    ///
+    /// - Note:
+    ///   - This method is typically called multiple times for streamed content.
+    ///   - The corresponding stream handler (if available) appends the data for decoding.
+    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        guard let handler = activeStreams[dataTask.taskIdentifier] else {
+            return
+        }
+        handler.append(data)
+    }
+    
+    /// Called when a streaming task finishes (successfully or with an error), and performs finalization.
+    ///
+    /// - Note:
+    ///   - This method removes the corresponding stream handler from the internal tracking dictionary.
+    ///   - The `finish` method on the handler is invoked to deliver the final result via the `completion` closure.
+    public func urlSession( _ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        guard let handler = activeStreams[task.taskIdentifier] else {
+            return
+        }
+        _ = streamLock.sync {
+            activeStreams.removeValue(forKey: task.taskIdentifier)
+        }
+        handler.finish(
+            request: task.originalRequest,
+            response: task.response,
+            error: error
+        )
     }
     
 }
