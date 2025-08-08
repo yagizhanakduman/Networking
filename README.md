@@ -34,8 +34,9 @@ Provides both **async/await** and closure‑based APIs, chainable syntax, SSL ce
    * [RequestConfig - declarative endpoint object](#2-requestconfig--declarative-endpoint-object)
    * [Fluent Chain API](#3-fluent-chain-api-1)
    * [Pure async/await](#4-pure-asyncawait)
-   * [Common Parameters Cheat-Sheet](#5-common-parameters-cheat-sheet)
-   * [Error Handling Pattern](#6-error-handling-pattern)
+   * [Streaming Requests](#5-streaming-requests)
+   * [Common Parameters Cheat-Sheet](#6-common-parameters-cheat-sheet)
+   * [Error Handling Pattern](#7-error-handling-pattern)
 8. [Responses with `NetworkingResponse`](#responses-with-networkingresponse)  
    * [Reading success or failure](#1-reading-success-or-failure)
    * [Accessing headers, status code & raw payload](#2-accessing-headers-status-code--raw-payload)
@@ -616,7 +617,81 @@ let response: NetworkResponse<User> = await networking.request(requestConfig)
 print(response.statusCode)   // easy access to HTTP metadata
 ```
 
-### 5. Common Parameters Cheat-Sheet
+### 5. Streaming Requests
+
+Sometimes the server doesn’t send you everything at once — think AI chat, live logs, real-time stock quotes.
+With `networking.stream(…)` you can start receiving and decoding chunks as they arrive, without waiting for the whole payload.
+
+Two flavours — URL-only (quick) or full `RequestConfig` (flexible):
+
+**URL-Only Stream**
+
+```swift
+networking.stream(
+    url: "https://api.example.com/stream",
+    of: ChatChunk.self,
+    decodingStrategy: .eventStream,      /// or .plainJSON
+    onChunk: { chunkResponse in
+        switch chunkResponse.result {
+        case .success(let chunk):
+            print("📦 New chunk:", chunk)
+        case .failure(let error):
+            print("❌ Chunk error:", error)
+        }
+    },
+    completion: { finalResponse in
+        print("✅ Stream finished:", finalResponse)
+    }
+)
+```
+
+**RequestConfig Stream**
+
+```swift
+let config = RequestConfig(
+    url: URL(string: "https://api.example.com/stream")!,
+    method: .get,
+    headers: HTTPHeaders([
+        .accept("text/event-stream"),     /// important for SSE endpoints
+        .authorization(bearerToken: token)
+    ])
+)
+
+networking.stream(
+    config,
+    of: ChatChunk.self,
+    decodingStrategy: .eventStream,
+    onChunk: { chunkResponse in
+        if case .success(let chunk) = chunkResponse.result {
+            print("👀 Got:", chunk.message)
+        }
+    },
+    completion: { final in
+        print("Stream done:", final)
+    }
+)
+```
+
+When to use?
+- Live updates from AI models (character-by-character or sentence-by-sentence)
+- Real-time feeds (e.g., sports scores, telemetry)
+- Server-Sent Events (`text/event-stream`)
+- APIs that push data in multiple discrete JSON objects
+
+**Key Parameters**
+| Parameter          | Purpose                                                           |
+| ------------------ | ----------------------------------------------------------------- |
+| `decodingStrategy` | `.plainJSON` for discrete JSON blobs, `.eventStream` for SSE data |
+| `onChunk`          | Called **every time** a chunk is decoded successfully             |
+| `completion`       | Called once when the stream ends or fails                         |
+| `retryCount`       | Optional retries for transient failures                           |
+| `cachePolicy`      | Optionally emit cached chunk(s) before streaming                  |
+
+
+> Tip : `.eventStream` automatically strips `data:` prefixes and ignores `[DONE]` terminators.
+
+
+### 6. Common Parameters Cheat-Sheet
 
 | Parameter         | Use-case example                                        |
 | ----------------- | ------------------------------------------------------- |
@@ -627,7 +702,7 @@ print(response.statusCode)   // easy access to HTTP metadata
 | `cachePolicy`     | offline read or bandwidth-saving                        |
 | `decoder`         | custom date strategy (`ISO8601`, `secondsSince1970`)    |
 
-### 6. Error Handling Pattern
+### 7. Error Handling Pattern
 
 ```swift
 func handleResponse<T>(_ response: NetworkResponse<T>) {
